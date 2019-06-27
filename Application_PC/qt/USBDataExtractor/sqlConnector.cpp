@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <QDebug>
 
 
 #include "sqlConnector.hpp"
@@ -25,13 +26,16 @@ std::string mapToJson(std::map<std::string,int> mapCount) {
 
 
     std::string json = "";
-    json += "{\"data\":{";
+    json += "{\"data\":[";
 
-    for(auto it = mapCount.begin(); it != mapCount.end(); ++it)
-        json += "\"" + it->first + "\":" + std::to_string(it->second) + ',';
+    for(auto it = mapCount.begin(); it != mapCount.end(); ++it) {
+        json += "{\"type\":\"" + it->first + "\",";
+        json += "\"count\":\"" + std::to_string(it->second) + "\"},";
+    }
 
     json = json.erase(json.length()-1);
-    json += "}}";
+    json += "]}";
+    qDebug() << QString::fromStdString(json) ;
     return json;
 }
 
@@ -48,5 +52,5 @@ bool SqlConnector::execute(std::map<std::string,int> mapCount){
         
     }
 
-
+    return true;
 }
