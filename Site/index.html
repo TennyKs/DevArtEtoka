@@ -1,1 +1,297 @@
-lekipetoka ich ich
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Premier programme WebGL</title>
+    </head>
+    
+    <body>
+        <script src="three.js/three.js"></script>
+        <script src="three.js/OrbitControls.js"></script>
+        <script src="three.js/OBJLoader.js"></script>
+        <script src="three.js/MTLLoader.js"></script>
+        <script>
+            //DB QUERY
+            
+            //GET ID
+            
+            function getXMLHttpRequest() 
+            {
+                var xhr = null;
+
+                if (window.XMLHttpRequest || window.ActiveXObject) 
+                {
+                    if (window.ActiveXObject) 
+                    {
+                        try 
+                        {
+                            xhr = new ActiveXObject("Msxml2.XMLHTTP");
+                        } catch(e) 
+                        {
+                            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                    } else 
+                    {
+                        xhr = new XMLHttpRequest(); 
+                    }
+                } else {
+                    alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+                    return null;
+                }
+                return xhr;
+            }   
+            
+            
+            
+            
+            
+            
+            
+                        
+            var scene = new THREE.Scene();
+            scene.background = new THREE.Color("rgb(255, 255, 255)");
+            
+            var camera = new THREE.PerspectiveCamera( 75,window.innerWidth/window.innerHeight, 0.1, 1000 );
+            var controls = new THREE.OrbitControls(camera);
+            
+            var renderer = new THREE.WebGLRenderer( {antialias: true} );
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFShadowMap;
+            
+
+            
+            //LOAD MODELS
+            
+                
+                
+                var objLoader = new THREE.OBJLoader();
+                objLoader.setPath('models/');
+                objLoader.load('forme_archive.obj', function(object)
+                {
+                    scene.add(object);
+                    //object.scale.set(1,1,10);
+                    object.position.x = 0;
+                    object.position.y = 0;
+                    object.position.z = 0;
+                    object.name = "archive";
+                    
+                    
+                        objLoader.load('forme_programme.obj', function(object)
+                        {
+                            scene.add(object);
+                            //object.scale.set(1,1,10);
+                            object.position.x = 3;
+                            object.position.y = 0;
+                            object.position.z = 0;
+                            object.name = "archive";
+                            
+                                objLoader.load('forme_image.obj', function(object)
+                                {
+                                    scene.add(object);
+                                    //object.scale.set(1,1,10);
+                                    object.position.x = 6;
+                                    object.position.y = 0;
+                                    object.position.z = 0;
+                                    object.name = "archive";
+                                    
+                                        objLoader.load('forme_audio.obj', function(object)
+                                        {
+                                            scene.add(object);
+                                            //object.scale.set(1,1,10);
+                                            object.position.x = 9;
+                                            object.position.y = 0;
+                                            object.position.z = 0;
+                                            object.name = "archive";
+                                            
+                                            
+                                                objLoader.load('forme_video.obj', function(object)
+                                                {
+                                                    scene.add(object);
+                                                    //object.scale.set(1,1,10);
+                                                    object.position.x = 12;
+                                                    object.position.y = 0;
+                                                    object.position.z = 0;
+                                                    object.name = "archive";
+                                                    
+                                                        objLoader.load('forme_document.obj', function(object)
+                                                        {
+                                                            scene.add(object);
+                                                            //object.scale.set(1,1,10);
+                                                            object.position.x = 15;
+                                                            object.position.y = 0;
+                                                            object.position.z = 0;
+                                                            object.name = "archive";
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            //GET DATA
+            
+                                                            var xhr1 = getXMLHttpRequest();
+                                                            
+                                                            
+                                                            xhr1.open("GET", "getDatisId.php", false);
+                                                            xhr1.send(null);
+                                                            
+                                                            
+                                                            var id;
+                                                            
+                                                        setTimeout(function(){
+                                                                id = xhr1.response;
+                                                                console.log("id "+id);
+                                                            }, 2000);
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            var xhr2 = getXMLHttpRequest();
+                                                            
+                                                            
+                                                            xhr2.open("GET", "getDatisData.php", false);
+                                                            xhr2.send(null);
+                                                            
+                                                            
+                                                            var data;
+                                                            var query;
+                                                            
+                                                        setTimeout(function(){
+                                                                var data = xhr2.response;
+                                                                query = JSON.parse(data);
+                                                                console.log("data " + data);
+                                                                console.log(query.data.length);
+                                                            }, 2000);
+                                                            
+                                                            
+
+                                                            
+                                                            /*for(var i in query.data)
+                                                            {
+                                                                console.log(i.type);
+                                                            }*/
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                        }
+                                                        
+                                                        , function(xhr)
+                                                        {
+                                                            console.log((xhr.loaded / xhr.total * 100) + ' %loaded');
+                                                        }, function(error)
+                                                        {
+                                                            console.error("erreur de chargement");
+                                                        });
+                                                    
+                                                }
+                                                
+                                                , function(xhr)
+                                                {
+                                                    console.log((xhr.loaded / xhr.total * 100) + ' %loaded');
+                                                }, function(error)
+                                                {
+                                                    console.error("erreur de chargement");
+                                                });
+                                            
+                                        }
+                                        
+                                        , function(xhr)
+                                        {
+                                            console.log((xhr.loaded / xhr.total * 100) + ' %loaded');
+                                        }, function(error)
+                                        {
+                                            console.error("erreur de chargement");
+                                        });
+                                    
+                                }
+                                
+                                , function(xhr)
+                                {
+                                    console.log((xhr.loaded / xhr.total * 100) + ' %loaded');
+                                }, function(error)
+                                {
+                                    console.error("erreur de chargement");
+                                });
+                            
+                        }
+                        
+                        , function(xhr)
+                        {
+                            console.log((xhr.loaded / xhr.total * 100) + ' %loaded');
+                        }, function(error)
+                        {
+                            console.error("erreur de chargement");
+                        });
+                    
+                }
+                
+                , function(xhr)
+                {
+                    console.log((xhr.loaded / xhr.total * 100) + ' %loaded');
+                }, function(error)
+                {
+                    console.error("erreur de chargement");
+                });
+            
+            
+        
+            
+            //LIGHT
+            var lumiere = new THREE.AmbientLight(0x555555);
+            scene.add(lumiere);
+            var lumiereDir = new THREE.DirectionalLight(0xffffff);
+            lumiereDir.position.set(1, 1, 1);
+            
+            lumiereDir.castShadow = true;
+            lumiereDir.shadow.width = 2048;
+            lumiereDir.shadow.height = 2048;
+            lumiereDir.shadow.camera.top = 20;
+            lumiereDir.shadow.camera.bottom = -20;
+            lumiereDir.shadow.camera.left = -20.5;
+            lumiereDir.shadow.camera.right = 20.5;
+            lumiereDir.shadow.camera.far = 500.75;
+            lumiereDir.shadow.bias = -0.025;
+            
+            scene.add(lumiereDir);
+            
+            //HELPERS
+            var axesHelper = new THREE.AxesHelper(5);
+            scene.add(axesHelper);
+            
+            var size = 20;
+            var divisions = 10;
+            var gridHelper = new THREE.GridHelper(size, divisions);
+            scene.add(gridHelper)
+            
+            camera.position.set( 0, 0, 8 );
+            
+            window.addEventListener("keydown", 
+            function(event){
+                switch (event.key){
+                case "a":
+                    axesHelper.visible = !axesHelper.visible;
+                break;
+                case "g":
+                    gridHelper.visible = !gridHelper.visible;
+                break;
+                }
+                event.preventDefault();
+            }, true);
+            
+            var animate = function () {
+            requestAnimationFrame( animate );
+            
+            //cube.rotation.x += 0.01;
+            //cube.rotation.y += 0.01;
+            
+            renderer.render( scene, camera );
+            
+            };
+            animate();
+        </script>
+        je fais des tests
+    </body>
+</html>
