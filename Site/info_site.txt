@@ -1,0 +1,21 @@
+Control panel username
+	b7_24105734
+Control panel password 	**********
+Control panel URL
+	cpanel.byethost7.com
+MySQL username
+	b7_24105734
+MySQL password
+	**********
+MySQL hostname
+	sql309.byethost7.com
+FTP username
+	b7_24105734
+FTP password
+	**********
+FTP host name 	ftp.byethost7.com
+
+	
+Your Website URL's
+Home page
+	http://datisroom.byethost7.com
