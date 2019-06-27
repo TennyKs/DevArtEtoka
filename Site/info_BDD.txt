@@ -1,0 +1,6 @@
+
+hostname = "remotemysql.com",
+username = "pJtsHBduHR",
+password = "BTKyT1EvRA",
+dataBaseName = "pJtsHBduHR";
+tableName = "data"

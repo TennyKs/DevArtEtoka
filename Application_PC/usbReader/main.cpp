@@ -1,4 +1,10 @@
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+
 #include "usbReader.hpp"
+#include "sqlConnector.hpp"
 
 int main(int argc, char** argv) {
 
@@ -10,6 +16,9 @@ int main(int argc, char** argv) {
         UsbReader usbReader(path);
         usbReader.completeMap();
         usbReader.display();
+
+        SqlConnector sqlConnector;
+        sqlConnector.execute(usbReader.getMap());
 
     }
 }

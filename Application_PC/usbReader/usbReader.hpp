@@ -21,4 +21,6 @@ class UsbReader {
         void display();
         bool completeMap();
 
+        inline std::map<std::string,int> getMap(){return mapCount;}
+
 };
