@@ -23,23 +23,35 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QPushButton *pushButton;
+    QLabel *imageLabel;
+    QLabel *stateLabel;
     QLabel *label;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(400, 300);
-        MainWindow->setMinimumSize(QSize(200, 200));
+        MainWindow->resize(450, 300);
+        MainWindow->setMinimumSize(QSize(450, 300));
+        MainWindow->setMaximumSize(QSize(450, 300));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(50, 240, 301, 28));
+        pushButton->setGeometry(QRect(75, 230, 300, 28));
+        imageLabel = new QLabel(centralWidget);
+        imageLabel->setObjectName(QString::fromUtf8("imageLabel"));
+        imageLabel->setGeometry(QRect(0, 50, 451, 141));
+        imageLabel->setPixmap(QPixmap(QString::fromUtf8("devart.png")));
+        imageLabel->setScaledContents(true);
+        stateLabel = new QLabel(centralWidget);
+        stateLabel->setObjectName(QString::fromUtf8("stateLabel"));
+        stateLabel->setGeometry(QRect(0, 270, 451, 20));
+        stateLabel->setAlignment(Qt::AlignCenter);
         label = new QLabel(centralWidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(0, 50, 401, 141));
-        label->setPixmap(QPixmap(QString::fromUtf8("../../../../../../T\303\251l\303\251chargements/devart.png")));
+        label->setGeometry(QRect(387, 234, 41, 20));
+        label->setPixmap(QPixmap(QString::fromUtf8("logo-usb.png")));
         label->setScaledContents(true);
         MainWindow->setCentralWidget(centralWidget);
 
@@ -52,6 +64,8 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "USB Data Extractor", nullptr));
         pushButton->setText(QApplication::translate("MainWindow", "S\303\251lectionnez un p\303\251riph\303\251rique de stockage", nullptr));
+        imageLabel->setText(QString());
+        stateLabel->setText(QApplication::translate("MainWindow", "- State -", nullptr));
         label->setText(QString());
     } // retranslateUi
 

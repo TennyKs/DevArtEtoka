@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->stateLabel->clear();
+    ui->stateLabel->hide();
 }
 
 MainWindow::~MainWindow()
@@ -23,6 +25,7 @@ void MainWindow::on_pushButton_clicked()
 {
     QFileDialog *dialog = new QFileDialog();
     dialog->show();
+    ui->stateLabel->clear();
 
     if (!dialog->getExistingDirectory().isEmpty()) {
         qDebug() << dialog->getExistingDirectory();
@@ -34,9 +37,14 @@ void MainWindow::on_pushButton_clicked()
 
         SqlConnector sqlConnector;
         sqlConnector.execute(usbReader.getMap());
-
+        ui->stateLabel->setText("Réussite");
+        ui->stateLabel->setStyleSheet("QLabel {color : #00e500; }");
+    } else {
+        ui->stateLabel->setText("Echec");
+        ui->stateLabel->setStyleSheet("QLabel {color : #ff0000; }");
     }
 
+    ui->stateLabel->show();
     dialog->close();
 
 }

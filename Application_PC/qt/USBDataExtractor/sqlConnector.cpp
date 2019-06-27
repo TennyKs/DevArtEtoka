@@ -39,7 +39,7 @@ bool SqlConnector::execute(std::map<std::string,int> mapCount){
 
 
     try {
-        string query = "INSERT INTO `data` (`ID`,`usbData`) VALUES (NULL, \'"+ mapToJson(mapCount) +"\')";
+        string query = "INSERT INTO `datis` (`id`,`usb_data`) VALUES (NULL, \'"+ mapToJson(mapCount) +"\')";
         cout << query << endl;
         cout << "SqlConnector::execute" << endl;
 

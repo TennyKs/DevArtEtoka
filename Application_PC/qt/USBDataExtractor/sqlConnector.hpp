@@ -13,10 +13,10 @@ class SqlConnector{
         sql::ResultSet* res;
 
         std::string 
-            hostname = "sql309.byethost7.com",
-            username = "b7_24105734",
-            password = "mtsdevart",
-            dataBaseName = "b7_24105734_datisroom";
+            hostname = "sql7.freesqldatabase.com",
+            username = "sql7296869",
+            password = "fBMfGqYL7I",
+            dataBaseName = "sql7296869";
 
     public: 
         SqlConnector();

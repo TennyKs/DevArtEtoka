@@ -1085,10 +1085,15 @@ mainwindow.o: ../USBDataExtractor/mainwindow.cpp /home/tom/Qt/5.12.1/gcc_64/incl
 		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		/home/tom/Qt/5.12.1/gcc_64/include/QtGui/qguiapplication.h \
 		/home/tom/Qt/5.12.1/gcc_64/include/QtGui/qinputmethod.h \
+		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/QLabel \
+		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/qlabel.h \
+		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/qframe.h \
 		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/QPushButton \
 		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/qpushbutton.h \
 		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/qabstractbutton.h \
-		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/QWidget
+		/home/tom/Qt/5.12.1/gcc_64/include/QtWidgets/QWidget \
+		../USBDataExtractor/sqlConnector.hpp \
+		../USBDataExtractor/usbReader.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../USBDataExtractor/mainwindow.cpp
 
 sqlConnector.o: ../USBDataExtractor/sqlConnector.cpp ../USBDataExtractor/sqlConnector.hpp
