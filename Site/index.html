@@ -64,65 +64,65 @@
             
             //LOAD MODELS
             
-                
+                var mob = new THREE.Group();
                 
                 var objLoader = new THREE.OBJLoader();
                 objLoader.setPath('models/');
-                objLoader.load('forme_archive.obj', function(object)
+                objLoader.load('Archive.obj', function(Archive)
                 {
-                    scene.add(object);
+                    scene.add(Archive);
                     //object.scale.set(1,1,10);
-                    object.position.x = 0;
-                    object.position.y = 0;
-                    object.position.z = 0;
-                    object.name = "archive";
+                    Archive.position.x = 0;
+                    Archive.position.y = 0;
+                    Archive.position.z = 0;
+                    Archive.name = "archive";
                     
                     
-                        objLoader.load('forme_programme.obj', function(object)
+                        objLoader.load('Programming.obj', function(Programming)
                         {
-                            scene.add(object);
+                            scene.add(Programming);
                             //object.scale.set(1,1,10);
-                            object.position.x = 3;
-                            object.position.y = 0;
-                            object.position.z = 0;
-                            object.name = "archive";
+                            Programming.position.x = 3;
+                            Programming.position.y = 0;
+                            Programming.position.z = 0;
+                            Programming.name = "archive";
                             
-                                objLoader.load('forme_image.obj', function(object)
+                                objLoader.load('Picture.obj', function(Picture)
                                 {
-                                    scene.add(object);
+                                    scene.add(Picture);
                                     //object.scale.set(1,1,10);
-                                    object.position.x = 6;
-                                    object.position.y = 0;
-                                    object.position.z = 0;
-                                    object.name = "archive";
+                                    Picture.position.x = 6;
+                                    Picture.position.y = 0;
+                                    Picture.position.z = 0;
+                                    Picture.name = "archive";
                                     
-                                        objLoader.load('forme_audio.obj', function(object)
+                                        objLoader.load('Audio.obj', function(Audio)
                                         {
-                                            scene.add(object);
+                                            scene.add(Audio);
                                             //object.scale.set(1,1,10);
-                                            object.position.x = 9;
-                                            object.position.y = 0;
-                                            object.position.z = 0;
-                                            object.name = "archive";
+                                            Audio.position.x = 9;
+                                            Audio.position.y = 0;
+                                            Audio.position.z = 0;
+                                            Audio.name = "archive";
                                             
                                             
-                                                objLoader.load('forme_video.obj', function(object)
+                                                objLoader.load('Video.obj', function(Video)
                                                 {
-                                                    scene.add(object);
+                                                    scene.add(Video);
                                                     //object.scale.set(1,1,10);
-                                                    object.position.x = 12;
-                                                    object.position.y = 0;
-                                                    object.position.z = 0;
-                                                    object.name = "archive";
+                                                    Video.position.x = 12;
+                                                    Video.position.y = 0;
+                                                    Video.position.z = 0;
+                                                    Video.name = "Video";
                                                     
-                                                        objLoader.load('forme_document.obj', function(object)
+                                                        objLoader.load('Document.obj', function(Document)
                                                         {
-                                                            scene.add(object);
+                                                            scene.add(Document);
                                                             //object.scale.set(1,1,10);
-                                                            object.position.x = 15;
-                                                            object.position.y = 0;
-                                                            object.position.z = 0;
-                                                            object.name = "archive";
+                                                            Document.position.x = 15;
+                                                            Document.position.y = 0;
+                                                            Document.position.z = 0;
+                                                            Document.name = "Document";
                                                             
                                                             
                                                             
@@ -160,20 +160,85 @@
                                                                 var data = xhr2.response;
                                                                 query = JSON.parse(data);
                                                                 console.log("data " + data);
-                                                                console.log(query.data.length);
+                                                                //console.log(query.data.length);
+                                                                
+                                                                //console.log(query.data[0].type);
+                                                                
+                                                                for(var i in query.data)
+                                                                {
+                                                                    console.log(query.data[i].type);
+                                                                    console.log(typeof(query.data[i].type));
+                                                                    switch ( query.data[i].type )
+                                                                    {
+                                                                        case 'Video':
+                                                                            var x = Math.random()*10 - 5;
+                                                                            var y = Math.random()*10 - 5;
+                                                                            var z = Math.random()*10 - 5;
+                                                                            
+                                                                            var clone =  Video.clone(true);
+                                                                            clone.position.set(x , y,  z);
+                                                                            mob.add(clone)
+                                                                        break;
+                                                                        case 'Audio':
+                                                                            var x = Math.random()*10 - 5;
+                                                                            var y = Math.random()*10 - 5;
+                                                                            var z = Math.random()*10 - 5;
+                                                                            
+                                                                            var clone =  Audio.clone(true);
+                                                                            clone.position.set(x , y,  z);
+                                                                            mob.add(clone)
+                                                                        break;
+                                                                        case 'Document':
+                                                                            var x = Math.random()*10 - 5;
+                                                                            var y = Math.random()*10 - 5;
+                                                                            var z = Math.random()*10 - 5;
+                                                                            
+                                                                            var clone =  Document.clone(true);
+                                                                            clone.position.set(x , y,  z);
+                                                                            mob.add(clone)
+                                                                        break;
+                                                                        case 'Picture':
+                                                                            var x = Math.random()*10 - 5;
+                                                                            var y = Math.random()*10 - 5;
+                                                                            var z = Math.random()*10 - 5;
+                                                                            
+                                                                            var clone =  Picture.clone(true);
+                                                                            clone.position.set(x , y,  z);
+                                                                            mob.add(clone)
+                                                                            
+                                                                        break;
+                                                                        case 'Archive':
+                                                                            var x = Math.random()*10 - 5;
+                                                                            var y = Math.random()*10 - 5;
+                                                                            var z = Math.random()*10 - 5;
+                                                                            
+                                                                            var clone =  Archive.clone(true);
+                                                                            clone.position.set(x , y,  z);
+                                                                            mob.add(clone)
+                                                                        break;
+                                                                        case 'Programming':
+                                                                            var x = Math.random()*10 - 5;
+                                                                            var y = Math.random()*10 - 5;
+                                                                            var z = Math.random()*10 - 5;
+                                                                            
+                                                                            var clone =  Programming.clone(true);
+                                                                            clone.position.set(x , y,  z);
+                                                                            mob.add(clone)
+                                                                        break;
+                                                                        case 'Other':
+                                                                            
+                                                                        break;
+                                                                        default:
+                                                                    }
+                                                                }
+                                                                scene.add(mob);
+                                                                mob.position.set(0, 5, -5);
+                                                                
+                                                                
                                                             }, 2000);
                                                             
                                                             
 
-                                                            
-                                                            /*for(var i in query.data)
-                                                            {
-                                                                console.log(i.type);
-                                                            }*/
-                                                            
-                                                            
-                                                            
-                                                            
                                                             
                                                             
                                                         }
