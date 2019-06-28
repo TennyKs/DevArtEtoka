@@ -113,6 +113,15 @@
                 return new THREE.Vector3(angX, angY, angZ);
                 
             }
+            function rgbToHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
+			function toHex(n) {
+			 n = parseInt(n,10);
+			 if (isNaN(n)) return "00";
+			 n = Math.max(0,Math.min(n,255));
+			 return "0123456789ABCDEF".charAt((n-n%16)/16)
+				  + "0123456789ABCDEF".charAt(n%16);
+			}
+
             
             function mid(point1, point2)
             {
@@ -135,7 +144,13 @@
             angleDiff(p1, p2, v);
                         
             var scene = new THREE.Scene();
-            scene.background = new THREE.Color("rgb(255, 255, 255)");
+            
+            var textures_skybox = [
+				"skybox/xp.jpg", "skybox/xn.jpg",
+				"skybox/yp.jpg", "skybox/yn.jpg",
+				"skybox/zp.jpg", "skybox/zn.jpg",
+			];
+			scene.background = new THREE.CubeTextureLoader().load( textures_skybox );
             
             var camera = new THREE.PerspectiveCamera( 75,window.innerWidth/window.innerHeight, 0.1, 1000 );
             var controls = new THREE.OrbitControls(camera);
@@ -224,7 +239,7 @@
                                                                         
                                                                         var ids;
                                                                         
-                                                                    setTimeout(function(){
+																			setTimeout(function(){
                                                                             var id = xhr1.response;
                                                                             ids = id.split('#');
                                                                             ids.pop();
@@ -243,7 +258,7 @@
                                                                         var datas;
                                                                         var querys = new Array();
                                                                         
-                                                                    setTimeout(function(){
+																			setTimeout(function(){
                                                                             var data = xhr2.response;
                                                                             datas = data.split('#');
                                                                             datas.pop();
@@ -261,7 +276,10 @@
                                                                             
                                                                             for(var i in querys)
                                                                             {
-                                                                                
+																				var color = new THREE.Vector3();;
+																				color.x = Math.random()*255;
+																				color.y = Math.random()*255;
+																				color.z = Math.random()*255;
                                                                                 
                                                                                 
                                                                                 var lastPos = new THREE.Vector3(0,0,0);
@@ -275,14 +293,13 @@
                                                                                     
                                                                                         var geometry = new THREE.CylinderGeometry( 0.5, 0.5, 1, 32 );
                                                                                         //var cylinder = new THREE.Mesh( geometry);
+																						var colorObj = new THREE.Color();
+																						
+																						
+																						colorObj.r = color.x + Math.random()*40 - 20.0;
+																						colorObj.g = color.y + Math.random()*40 - 20.0;
+																						colorObj.b = color.z + Math.random()*40 - 20.0;
                                                                                         
-                                                                                        
-                                                                                                                                                                
-                                                                                        
-                                                                                        
-//                                                                                         var x = lastPos.x + Math.random()*4 - 2;
-//                                                                                         var y = lastPos.y + Math.random()*4 - 2;
-//                                                                                         var z = lastPos.z + Math.random()*4;
                                                                                         var x = lastPos.x + Math.random()*2 - 1;
                                                                                         var y = lastPos.y + Math.random()*2 - 1;
                                                                                         var z = lastPos.z + Math.random()*2;
@@ -293,49 +310,40 @@
                                                                                         switch ( querys[i].data[j].type )
                                                                                         {
                                                                                             case 'Video':
-                                                                                                
-                                                                                                
                                                                                                  clone =  Video.clone(true);
-                                                                                                
-                                                                                                
                                                                                             break;
                                                                                             case 'Audio':
-                                                                                        
-                                                                                                
                                                                                                  clone =  Audio.clone(true);
-                                                                                                
                                                                                             break;
                                                                                             case 'Document':
-                                                                                    
-                                                                                                
                                                                                                  clone =  Document.clone(true);
-                                                                                               
                                                                                             break;
                                                                                             case 'Picture':
-                                                                                        
-                                                                                                
                                                                                                  clone =  Picture.clone(true);
-                                                                                             
-                                                                                                
                                                                                             break;
                                                                                             case 'Archive':
-                                                                                            
-                                                                                                
                                                                                                  clone =  Archive.clone(true);
-                                                                                        
                                                                                             break;
                                                                                             case 'Programming':
-                                                                                            
-                                                                                                
-                                                                                                 clone =  Programming.clone(true);
-                                                                                                                                                                                             
+                                                                                                 clone =  Programming.clone(true);                                                           
                                                                                             break;
                                                                                             default:
                                                                                                  clone =  Other.clone(true);
-                                                                                                
-                                                                                                
-                                                                                                
                                                                                         }
+                                                                                        
+                                                                                        
+                                                                                        
+																						var tmp = new THREE.Color();
+																						tmp.setHex("0x"+rgbToHex(colorObj.r,colorObj.g,colorObj.b));
+																						
+																						
+																						clone.traverse( function ( child ) {
+																						 if ( child instanceof THREE.Mesh ) {
+																							  //~ child.material.color.setRGB(0x00FF00);
+																								child.material = child.material.clone();
+																							  child.material.color.set(tmp);
+																							 }
+																						 } );
                                                                                         
                                                                                         clone.position.set(x , y,  z);
                                                                                         gr.add(clone)
@@ -344,22 +352,6 @@
                                                                                         cloneMir.position.set(-x , y,  z);
                                                                                         gr.add(cloneMir);
                                                                                         
-//                                                                                         var middle = mid(lastPos, new THREE.Vector3(x,y,z));
-//                                                                                         console.log("####################################");
-//                                                                                         console.log(lastPos);
-//                                                                                         console.log(new THREE.Vector3(x,y,z));
-//                                                                                         console.log(middle);
-//                                                                                         
-//                                                                                         var bbox = new THREE.Box3().setFromObject( clone );
-//                                                                                         var box = new THREE.Vector3().subVectors(bbox.max, bbox.min);
-//                                                                                         console.log(box);
-//                                                                                         middle.x += box.x / 2;
-//                                                                                         middle.y += box.y / 2;
-//                                                                                         //middle.z += box.z / 2;
-//                                                                                     
-//                                                                                         cylinder.position.set(middle.x, middle.y, middle.z);
-//                                                                                         //cylinder.position.set(0, 0, 0);
-//                                                                                         gr.add(cylinder);
                                                                                         
                                                                                         lastPos.x = x;
                                                                                         lastPos.y = y;
@@ -374,7 +366,7 @@
                                                                                     var y = Math.random()*20 - 10;
                                                                                     var z = Math.random()*20 - 10;
                                                                                             
-                                                                                    var speed = Math.random()  - 0.5;
+                                                                                    var speed = Math.random() * 0.3 + 0.2;
                                                                                     
                                                                                     //mobs[i].position.set(x,y,z);
                                                                                     //scene.add(mobs[i]);
@@ -486,13 +478,6 @@
             scene.add(lumiereDir);
             
             //HELPERS
-            var axesHelper = new THREE.AxesHelper(5);
-            scene.add(axesHelper);
-            
-            var size = 20;
-            var divisions = 10;
-            var gridHelper = new THREE.GridHelper(size, divisions);
-            scene.add(gridHelper)
             
             camera.position.set( 0, 0, 8 );
             
