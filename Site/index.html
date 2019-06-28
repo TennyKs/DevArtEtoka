@@ -222,7 +222,13 @@
 			 return "0123456789ABCDEF".charAt((n-n%16)/16)
 				  + "0123456789ABCDEF".charAt(n%16);
 			}
-
+            
+            
+            
+            
+            
+            
+            
             
             function mid(point1, point2)
             {
@@ -268,14 +274,17 @@
             //MUSIC
             
             
-            var audioLoader = new THREE.AudioLoader();
-            audioLoader.load( 'fond_musique_room.mp3', function( buffer ) {
-                sound.setBuffer( buffer );
-                sound.setLoop( true );
-                sound.setVolume( 0.5 );
-                sound.play();
+            var listener = new THREE.AudioListener(); 
+            camera.add( listener ); // create a global audio source 
+            var sound = new THREE.Audio( listener );
+
+
+            var audioLoader = new THREE.AudioLoader(); 
+            audioLoader.load( 'fond_musique_room.mp3', function( buffer ) { sound.setBuffer( buffer ); 
+            sound.setLoop( true ); 
+            sound.setVolume( 0.5 ); 
+            sound.play(); 
             });
-            
             
             
             //LOAD MODELS
