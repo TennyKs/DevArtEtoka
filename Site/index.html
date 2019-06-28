@@ -43,10 +43,11 @@
             
             
             
-            function Mob(group1, group2)
+            function Mob(group1, group2, dir)
             {
                 this.group1 = group1;
                 this.group2 = group2;//group.rotateX(- Math.PI).clone(true);
+                this.dir = dir;
             }
             
             Mob.prototype.addScene = function()
@@ -62,7 +63,76 @@
                 this.group2.position.set(x,y,z);
             }
             
+            function angleDiff(point1, point2, vec)
+            {
+                var vec2 = new THREE.Vector3
+                vec2.subVectors(point2 , point1);
+                
+                
+                
+                var vecX = new THREE.Vector3(0, vec.y, vec.z);
+                var vec2X = new THREE.Vector3(0, vec2.y, vec2.z);
+                
+                var angX;
+                if(vecX.length() == 0 || vec2X.length() == 0)
+                {
+                    angX = 0;
+                } else
+                {
+                    angX = vecX.angleTo(vec2X);
+                }
+                
+                
+                
+                var vecY = new THREE.Vector3(vec.x, 0, vec.z);
+                var vec2Y = new THREE.Vector3(vec2.x, 0, vec2.z);
+                
+                var angY;
+                if(vecY.length() == 0 || vec2Y.length() == 0)
+                {
+                    angY = 0;
+                } else
+                {
+                    angY = vecY.angleTo(vec2Y);
+                }
+                                
+                var vecZ = new THREE.Vector3(vec.x, vec.y, 0);
+                var vec2Z = new THREE.Vector3(vec2.x, vec2.y, 0);
+
+                
+                
+                var angZ;
+                if(vecZ.length() == 0 || vec2Z.length() == 0)
+                {
+                    angZ = 0;
+                } else
+                {
+                    angZ = vecX.angleTo(vec2Z);
+                }
+                
+                return new THREE.Vector3(angX, angY, angZ);
+                
+            }
             
+            function mid(point1, point2)
+            {
+    
+                var diff = new THREE.Vector3();
+                diff.subVectors(point2, point1);
+                //console.log(diff);
+                
+                
+                return new THREE.Vector3().addVectors( point1 , diff.divide(new THREE.Vector3(2,2,2)) );
+                
+            }
+            console.log("teeeeeeeeeeeeeeest");
+            console.log(mid(new THREE.Vector3(0,0,0),new THREE.Vector3(1,1,1)));
+            console.log("teeeeeeeeeeeeeeest");
+            
+            var v = new THREE.Vector3(1,1,0);
+            var p1 = new THREE.Vector3(0,0,0);
+            var p2 = new THREE.Vector3(0 ,0,1);
+            angleDiff(p1, p2, v);
                         
             var scene = new THREE.Scene();
             scene.background = new THREE.Color("rgb(255, 255, 255)");
@@ -134,184 +204,204 @@
                                                             Document.position.z = 0;
                                                             Document.name = "Document";
                                                             
-                                                            
-                                                            
-                                                            
-                                                            //GET DATA
-            
-                                                            var xhr1 = getXMLHttpRequest();
-                                                            
-                                                            
-                                                            xhr1.open("GET", "getDatisId.php", false);
-                                                            xhr1.send(null);
-                                                            console.log(xhr1);
-                                                            
-                                                            var ids;
-                                                            
-                                                        setTimeout(function(){
-                                                                var id = xhr1.response;
-                                                                ids = id.split('#');
-                                                                ids.pop();
-                                                            }, 2000);
-                                                            
-                                                            
-                                                            
-                                                            
-                                                            var xhr2 = getXMLHttpRequest();
-                                                            
-                                                            
-                                                            xhr2.open("GET", "getDatisData.php", false);
-                                                            xhr2.send(null);
-                                                            console.log(xhr2);
-                                                            
-                                                            var datas;
-                                                            var querys = new Array();
-                                                            
-                                                        setTimeout(function(){
-                                                                var data = xhr2.response;
-                                                                datas = data.split('#');
-                                                                datas.pop();
-                                                                for(var i in datas)
+                                                                objLoader.load('Other.obj', function(Other)
                                                                 {
-                                                                    console.log(datas[i]);
-                                                                    querys[i] = JSON.parse(datas[i]);
-                                                                }
+                                                                    //object.scale.set(1,1,10);
+                                                                    Other.position.x = 15;
+                                                                    Other.position.y = 0;
+                                                                    Other.position.z = 0;
+                                                                    Other.name = "Other";
                                                                 
-                                                                
-                                                                //console.log(query.data.length);
-                                                                
-                                                                //console.log(query.data[0].type);
-                                                                //console.log("querys "+querys.length);
-                                                                
-                                                                for(var i in querys)
-                                                                {
-                                                                    var lastPos = new THREE.Vector3(0,0,0);
-                                                                    var gr = new THREE.Group();
-                                                                    var grMir = new THREE.Group();
-                                                                    for(var j in querys[i].data)
-                                                                    {
-                                                                       // console.log(querys[i].data[j].type);
-                                                                        console.log(typeof(querys[i].data[j].type));
+                                                            
+                                                                        //GET DATA
+                        
+                                                                        var xhr1 = getXMLHttpRequest();
                                                                         
-                                                                        lastPos.x += Math.random()*4 - 2;
-                                                                        lastPos.y += Math.random()*4 - 2;
-                                                                        lastPos.z += Math.random()*4 ;
                                                                         
-                                                                        console.log(lastPos);
+                                                                        xhr1.open("GET", "getDatisId.php", false);
+                                                                        xhr1.send(null);
+                                                                        console.log(xhr1);
                                                                         
-                                                                        var x = lastPos.x ;
-                                                                        var y = lastPos.y ;
-                                                                        var z = lastPos.z ;
-                                                                        switch ( querys[i].data[j].type )
-                                                                        {
-                                                                            case 'Video':
-                                                                                
-                                                                                
-                                                                                var clone =  Video.clone(true);
-                                                                                clone.position.set(x , y,  z);
-                                                                                
-                                                                                gr.add(clone)
-                                                                                
-                                                                                var cloneMir =  Video.clone(true);
-                                                                                cloneMir.position.set(-x , y,  z);
-                                                                                
-                                                                                grMir.add(cloneMir)
-                                                                                
-                                                                            break;
-                                                                            case 'Audio':
-                                                                          
-                                                                                
-                                                                                var clone =  Audio.clone(true);
-                                                                                clone.position.set(x , y,  z);
-                                                                                gr.add(clone)
-                                                                                
-                                                                                var cloneMir =  Audio.clone(true);
-                                                                                cloneMir.position.set(-x , y,  z);
-                                                                                
-                                                                                grMir.add(cloneMir)
-                                                                            break;
-                                                                            case 'Document':
-                                                                      
-                                                                                
-                                                                                var clone =  Document.clone(true);
-                                                                                clone.position.set(x , y,  z);
-                                                                                gr.add(clone)
-                                                                                
-                                                                                var cloneMir =  Document.clone(true);
-                                                                                cloneMir.position.set(-x , y,  z);
-                                                                                
-                                                                                grMir.add(cloneMir)
-                                                                            break;
-                                                                            case 'Picture':
-                                                                          
-                                                                                
-                                                                                var clone =  Picture.clone(true);
-                                                                                clone.position.set(x , y,  z);
-                                                                                gr.add(clone)
-                                                                                
-                                                                                var cloneMir =  Picture.clone(true);
-                                                                                cloneMir.position.set(-x , y,  z);
-                                                                                
-                                                                                grMir.add(cloneMir)
-                                                                                
-                                                                            break;
-                                                                            case 'Archive':
-                                                                              
-                                                                                
-                                                                                var clone =  Archive.clone(true);
-                                                                                clone.position.set(x , y,  z);
-                                                                                gr.add(clone)
-                                                                                
-                                                                                var cloneMir =  Archive.clone(true);
-                                                                                cloneMir.position.set(-x , y,  z);
-                                                                                
-                                                                                grMir.add(cloneMir)
-                                                                            break;
-                                                                            case 'Programming':
-                                                                               
-                                                                                
-                                                                                var clone =  Programming.clone(true);
-                                                                                clone.position.set(x , y,  z);
-                                                                                gr.add(clone)
-                                                                                
-                                                                                var cloneMir =  Programming.clone(true);
-                                                                                cloneMir.position.set(-x , y,  z);
-                                                                                
-                                                                                grMir.add(cloneMir)
-                                                                            break;
-                                                                            case 'Other':
-                                                                                
-                                                                            break;
-                                                                            default:
-                                                                        }
+                                                                        var ids;
+                                                                        
+                                                                    setTimeout(function(){
+                                                                            var id = xhr1.response;
+                                                                            ids = id.split('#');
+                                                                            ids.pop();
+                                                                        }, 2000);
                                                                         
                                                                         
                                                                         
                                                                         
-                                                                    }
+                                                                        var xhr2 = getXMLHttpRequest();
+                                                                        
+                                                                        
+                                                                        xhr2.open("GET", "getDatisData.php", false);
+                                                                        xhr2.send(null);
+                                                                        console.log(xhr2);
+                                                                        
+                                                                        var datas;
+                                                                        var querys = new Array();
+                                                                        
+                                                                    setTimeout(function(){
+                                                                            var data = xhr2.response;
+                                                                            datas = data.split('#');
+                                                                            datas.pop();
+                                                                            for(var i in datas)
+                                                                            {
+                                                                                console.log(datas[i]);
+                                                                                querys[i] = JSON.parse(datas[i]);
+                                                                            }
+                                                                            
+                                                                            
+                                                                            //console.log(query.data.length);
+                                                                            
+                                                                            //console.log(query.data[0].type);
+                                                                            //console.log("querys "+querys.length);
+                                                                            
+                                                                            for(var i in querys)
+                                                                            {
+                                                                                
+                                                                                
+                                                                                
+                                                                                var lastPos = new THREE.Vector3(0,0,0);
+                                                                                var gr = new THREE.Group();
+                                                                                var grMir = new THREE.Group();
+                                                                                for(var j in querys[i].data)
+                                                                                {
+                                                                                // console.log(querys[i].data[j].type);
+                                                                                for(var k =0; k < querys[i].data[j].count; k++)
+                                                                                {
+                                                                                    
+                                                                                        var geometry = new THREE.CylinderGeometry( 0.5, 0.5, 1, 32 );
+                                                                                        //var cylinder = new THREE.Mesh( geometry);
+                                                                                        
+                                                                                        
+                                                                                                                                                                
+                                                                                        
+                                                                                        
+//                                                                                         var x = lastPos.x + Math.random()*4 - 2;
+//                                                                                         var y = lastPos.y + Math.random()*4 - 2;
+//                                                                                         var z = lastPos.z + Math.random()*4;
+                                                                                        var x = lastPos.x + Math.random()*2 - 1;
+                                                                                        var y = lastPos.y + Math.random()*2 - 1;
+                                                                                        var z = lastPos.z + Math.random()*2;
+                                                                                    
+                                                                                        var clone;
+                                                                                        var cloneMir;
+                                                                                        
+                                                                                        switch ( querys[i].data[j].type )
+                                                                                        {
+                                                                                            case 'Video':
+                                                                                                
+                                                                                                
+                                                                                                 clone =  Video.clone(true);
+                                                                                                
+                                                                                                
+                                                                                            break;
+                                                                                            case 'Audio':
+                                                                                        
+                                                                                                
+                                                                                                 clone =  Audio.clone(true);
+                                                                                                
+                                                                                            break;
+                                                                                            case 'Document':
+                                                                                    
+                                                                                                
+                                                                                                 clone =  Document.clone(true);
+                                                                                               
+                                                                                            break;
+                                                                                            case 'Picture':
+                                                                                        
+                                                                                                
+                                                                                                 clone =  Picture.clone(true);
+                                                                                             
+                                                                                                
+                                                                                            break;
+                                                                                            case 'Archive':
+                                                                                            
+                                                                                                
+                                                                                                 clone =  Archive.clone(true);
+                                                                                        
+                                                                                            break;
+                                                                                            case 'Programming':
+                                                                                            
+                                                                                                
+                                                                                                 clone =  Programming.clone(true);
+                                                                                                                                                                                             
+                                                                                            break;
+                                                                                            default:
+                                                                                                 clone =  Other.clone(true);
+                                                                                                
+                                                                                                
+                                                                                                
+                                                                                        }
+                                                                                        
+                                                                                        clone.position.set(x , y,  z);
+                                                                                        gr.add(clone)
+                                                                                        
+                                                                                        cloneMir =  clone.clone(true);
+                                                                                        cloneMir.position.set(-x , y,  z);
+                                                                                        gr.add(cloneMir);
+                                                                                        
+//                                                                                         var middle = mid(lastPos, new THREE.Vector3(x,y,z));
+//                                                                                         console.log("####################################");
+//                                                                                         console.log(lastPos);
+//                                                                                         console.log(new THREE.Vector3(x,y,z));
+//                                                                                         console.log(middle);
+//                                                                                         
+//                                                                                         var bbox = new THREE.Box3().setFromObject( clone );
+//                                                                                         var box = new THREE.Vector3().subVectors(bbox.max, bbox.min);
+//                                                                                         console.log(box);
+//                                                                                         middle.x += box.x / 2;
+//                                                                                         middle.y += box.y / 2;
+//                                                                                         //middle.z += box.z / 2;
+//                                                                                     
+//                                                                                         cylinder.position.set(middle.x, middle.y, middle.z);
+//                                                                                         //cylinder.position.set(0, 0, 0);
+//                                                                                         gr.add(cylinder);
+                                                                                        
+                                                                                        lastPos.x = x;
+                                                                                        lastPos.y = y;
+                                                                                        lastPos.z = z;
+                                                                                    
+                                                                                    }
+                                                                                    
+                                                                                    
+                                                                                }
+                                                                                
+                                                                                    var x = Math.random()*20 - 10;
+                                                                                    var y = Math.random()*20 - 10;
+                                                                                    var z = Math.random()*20 - 10;
+                                                                                            
+                                                                                    var speed = Math.random()  - 0.5;
+                                                                                    
+                                                                                    //mobs[i].position.set(x,y,z);
+                                                                                    //scene.add(mobs[i]);
+                                                                                    
+                                                                                    mobs[i] = new Mob(gr, grMir, new THREE.Vector3(speed * 1.4 ,0,0));
+                                                                                    mobs[i].pos(x,y,z);
+                                                                                    mobs[i].addScene();
+                                                                                    
+                                                                            }
+                                                                            
                                                                     
-                                                                        var x = Math.random()*10 - 5;
-                                                                        var y = Math.random()*10 - 5;
-                                                                        var z = Math.random()*10 - 5;
-                                                                                
-                                                                        
-                                                                        //mobs[i].position.set(x,y,z);
-                                                                        //scene.add(mobs[i]);
-                                                                        
-                                                                        mobs[i] = new Mob(gr, grMir);
-                                                                        mobs[i].pos(x,y,z);
-                                                                        mobs[i].addScene();
-                                                                }
-                                                                
-                                                           
-                                                                //scene.add(mob);
-                                                                //mob.position.set(0, 5, -5);
-                                                                
-                                                                
-                                                            }, 2000);
+                                                                            //scene.add(mob);
+                                                                            //mob.position.set(0, 5, -5);
+                                                                            
+                                                                            
+                                                                        }, 2000);
                                                             
                                                             
-
+                                                            }
+                                                        
+                                                            , function(xhr)
+                                                            {
+                                                                console.log((xhr.loaded / xhr.total * 100) + ' %loaded');
+                                                            }, function(error)
+                                                            {
+                                                                console.error("erreur de chargement");
+                                                            });
                                                             
                                                             
                                                         }
@@ -419,12 +509,32 @@
                 event.preventDefault();
             }, true);
             
+            var t = 0;
+            var direction = new THREE.Vector3(0.05, 0,0);
+            for(var i in mobs)
+            {
+            
+            }
             var animate = function () {
             requestAnimationFrame( animate );
+            
+            
+            
+            for(var i in mobs)
+            {
+            //mobs[i].group1.rotateY(0.01);
+            mobs[i].group1.position.set(mobs[i].group1.position.x + mobs[i].dir.x,mobs[i].group1.position.y +  mobs[i].dir.y ,mobs[i].group1.position.z + mobs[i].dir.z);
+            mobs[i].dir.applyAxisAngle(new THREE.Vector3(0,1,0), mobs[i].dir.length()/30);
+            //mobs[i].group1.setRotationFromAxisAngle(new THREE.Vector3(0,1,0), t)
+            mobs[i].group1.lookAt(mobs[i].group1.position.x + mobs[i].dir.x,mobs[i].group1.position.y +  mobs[i].dir.y ,mobs[i].group1.position.z + mobs[i].dir.z);
+            //console.log(mobs[i].center);
+            //console.log(mobs[i]);
+            }
             
             //cube.rotation.x += 0.01;
             //cube.rotation.y += 0.01;
             
+            t+= 0.001;
             renderer.render( scene, camera );
             
             };
