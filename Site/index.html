@@ -379,7 +379,7 @@
                                                                                     //mobs[i].position.set(x,y,z);
                                                                                     //scene.add(mobs[i]);
                                                                                     
-                                                                                    mobs[i] = new Mob(gr, grMir, new THREE.Vector3(speed * 1.4 ,0,0));
+                                                                                    mobs[i] = new Mob(gr, grMir, new THREE.Vector3(speed  ,0,0));
                                                                                     mobs[i].pos(x,y,z);
                                                                                     mobs[i].addScene();
                                                                                     
@@ -522,17 +522,11 @@
             
             for(var i in mobs)
             {
-            //mobs[i].group1.rotateY(0.01);
             mobs[i].group1.position.set(mobs[i].group1.position.x + mobs[i].dir.x,mobs[i].group1.position.y +  mobs[i].dir.y ,mobs[i].group1.position.z + mobs[i].dir.z);
             mobs[i].dir.applyAxisAngle(new THREE.Vector3(0,1,0), mobs[i].dir.length()/30);
-            //mobs[i].group1.setRotationFromAxisAngle(new THREE.Vector3(0,1,0), t)
             mobs[i].group1.lookAt(mobs[i].group1.position.x + mobs[i].dir.x,mobs[i].group1.position.y +  mobs[i].dir.y ,mobs[i].group1.position.z + mobs[i].dir.z);
-            //console.log(mobs[i].center);
-            //console.log(mobs[i]);
             }
             
-            //cube.rotation.x += 0.01;
-            //cube.rotation.y += 0.01;
             
             t+= 0.001;
             renderer.render( scene, camera );
