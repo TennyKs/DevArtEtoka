@@ -1,5 +1,6 @@
 #include <experimental/filesystem>
 #include <iterator>
+#include <QDebug>
 #include "usbReader.hpp"
 
 
@@ -24,6 +25,7 @@ bool UsbReader::completeMap(){
 
     for(auto& p: fs::recursive_directory_iterator(dir))
     {
+        std::string type = "Other";
         path_file=p.path().filename().string();
 
         size_t pos = 0;
@@ -31,10 +33,20 @@ bool UsbReader::completeMap(){
             path_file.erase(0, pos + delimiter.length());
         
 
-        if(mapCount.find(path_file) != mapCount.end())
-            mapCount.at(path_file)=mapCount.find(path_file)->second + 1;
+        for (auto it = extensions.begin();it != extensions.end(); ++it) {
+            for (unsigned int i = 0;i<it->second.size();++i) {
+                if (it->second.at(i) == path_file) {
+                    type = it->first;
+                }
+            }
+        }
+
+        if(mapCount.find(type) != mapCount.end())
+            mapCount.at(type)=mapCount.find(type)->second + 1;
         else
-            mapCount.insert({path_file,1});
+            mapCount.insert({type,1});
+
+
         
     }
 
@@ -42,6 +54,8 @@ bool UsbReader::completeMap(){
 }
 
 void UsbReader::display(){
+
+    qDebug() << "display -> " << mapCount.size();
     for(auto it = mapCount.begin(); it != mapCount.end(); ++it)
         std::cout << it->first << " " << it->first << " " << it->second << "\n";
 }

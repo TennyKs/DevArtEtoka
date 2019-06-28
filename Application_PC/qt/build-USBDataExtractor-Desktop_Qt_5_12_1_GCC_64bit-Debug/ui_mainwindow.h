@@ -26,6 +26,7 @@ public:
     QLabel *imageLabel;
     QLabel *stateLabel;
     QLabel *label;
+    QLabel *label_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -53,6 +54,11 @@ public:
         label->setGeometry(QRect(387, 234, 41, 20));
         label->setPixmap(QPixmap(QString::fromUtf8("logo-usb.png")));
         label->setScaledContents(true);
+        label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setGeometry(QRect(22, 233, 41, 20));
+        label_2->setPixmap(QPixmap(QString::fromUtf8("logo-usb_mirror.png")));
+        label_2->setScaledContents(true);
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
@@ -67,6 +73,7 @@ public:
         imageLabel->setText(QString());
         stateLabel->setText(QApplication::translate("MainWindow", "- State -", nullptr));
         label->setText(QString());
+        label_2->setText(QString());
     } // retranslateUi
 
 };

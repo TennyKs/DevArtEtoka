@@ -1,5 +1,7 @@
 #include <QFileDialog>
 #include <QDebug>
+#include <QStyle>
+#include <QDesktopWidget>
 
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
@@ -14,6 +16,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->stateLabel->clear();
     ui->stateLabel->hide();
+    setWindowFlags(Qt::WindowStaysOnTopHint);
+
+    setGeometry(
+        QStyle::alignedRect(
+            Qt::LeftToRight,
+            Qt::AlignCenter,
+            this->size(),
+            qApp->desktop()->availableGeometry()
+        )
+    );
 }
 
 MainWindow::~MainWindow()
@@ -23,13 +35,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    QFileDialog *dialog = new QFileDialog();
-    dialog->show();
-    ui->stateLabel->clear();
+//    QFileDialog *dialog = new QFileDialog();
+//    dialog->show();
 
-    if (!dialog->getExistingDirectory().isEmpty()) {
-        qDebug() << dialog->getExistingDirectory();
-        std::string path = dialog->getExistingDirectory().toStdString();
+    QString file_name = QFileDialog::getExistingDirectory(this, tr("Open a folder.."));
+    ui->stateLabel->clear();
+    qDebug() << file_name;
+
+    if (!file_name.isNull() && !file_name.isEmpty() && file_name.length() > 0) {
+//        qDebug() << dialog->getExistingDirectory();
+//        std::string path = dialog->getExistingDirectory().toStdString();
+        std::string path = file_name.toStdString();
 
         UsbReader usbReader(path);
         usbReader.completeMap();
@@ -45,6 +61,6 @@ void MainWindow::on_pushButton_clicked()
     }
 
     ui->stateLabel->show();
-    dialog->close();
+//    dialog->close();
 
 }

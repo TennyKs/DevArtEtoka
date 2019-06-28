@@ -35,7 +35,7 @@ std::string mapToJson(std::map<std::string,int> mapCount) {
 
     json = json.erase(json.length()-1);
     json += "]}";
-    qDebug() << QString::fromStdString(json) ;
+//    qDebug() << QString::fromStdString(json) ;
     return json;
 }
 
