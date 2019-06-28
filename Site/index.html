@@ -43,8 +43,24 @@
             
             
             
+            function Mob(group1, group2)
+            {
+                this.group1 = group1;
+                this.group2 = group2;//group.rotateX(- Math.PI).clone(true);
+            }
             
+            Mob.prototype.addScene = function()
+            {
+                scene.add(this.group1);
+                scene.add(this.group2);
+                console.log("adscene");
+            }
             
+            Mob.prototype.pos = function(x,y,z)
+            {
+                this.group1.position.set(x,y,z);
+                this.group2.position.set(x,y,z);
+            }
             
             
                         
@@ -64,13 +80,12 @@
             
             //LOAD MODELS
             
-                var mob = new THREE.Group();
+                var mobs = new Array();//THREE.Group();
                 
                 var objLoader = new THREE.OBJLoader();
                 objLoader.setPath('models/');
                 objLoader.load('Archive.obj', function(Archive)
                 {
-                    scene.add(Archive);
                     //object.scale.set(1,1,10);
                     Archive.position.x = 0;
                     Archive.position.y = 0;
@@ -80,7 +95,6 @@
                     
                         objLoader.load('Programming.obj', function(Programming)
                         {
-                            scene.add(Programming);
                             //object.scale.set(1,1,10);
                             Programming.position.x = 3;
                             Programming.position.y = 0;
@@ -89,7 +103,6 @@
                             
                                 objLoader.load('Picture.obj', function(Picture)
                                 {
-                                    scene.add(Picture);
                                     //object.scale.set(1,1,10);
                                     Picture.position.x = 6;
                                     Picture.position.y = 0;
@@ -98,7 +111,6 @@
                                     
                                         objLoader.load('Audio.obj', function(Audio)
                                         {
-                                            scene.add(Audio);
                                             //object.scale.set(1,1,10);
                                             Audio.position.x = 9;
                                             Audio.position.y = 0;
@@ -108,7 +120,6 @@
                                             
                                                 objLoader.load('Video.obj', function(Video)
                                                 {
-                                                    scene.add(Video);
                                                     //object.scale.set(1,1,10);
                                                     Video.position.x = 12;
                                                     Video.position.y = 0;
@@ -117,7 +128,6 @@
                                                     
                                                         objLoader.load('Document.obj', function(Document)
                                                         {
-                                                            scene.add(Document);
                                                             //object.scale.set(1,1,10);
                                                             Document.position.x = 15;
                                                             Document.position.y = 0;
@@ -134,13 +144,14 @@
                                                             
                                                             xhr1.open("GET", "getDatisId.php", false);
                                                             xhr1.send(null);
+                                                            console.log(xhr1);
                                                             
-                                                            
-                                                            var id;
+                                                            var ids;
                                                             
                                                         setTimeout(function(){
-                                                                id = xhr1.response;
-                                                                console.log("id "+id);
+                                                                var id = xhr1.response;
+                                                                ids = id.split('#');
+                                                                ids.pop();
                                                             }, 2000);
                                                             
                                                             
@@ -151,88 +162,150 @@
                                                             
                                                             xhr2.open("GET", "getDatisData.php", false);
                                                             xhr2.send(null);
+                                                            console.log(xhr2);
                                                             
-                                                            
-                                                            var data;
-                                                            var query;
+                                                            var datas;
+                                                            var querys = new Array();
                                                             
                                                         setTimeout(function(){
                                                                 var data = xhr2.response;
-                                                                query = JSON.parse(data);
-                                                                console.log("data " + data);
+                                                                datas = data.split('#');
+                                                                datas.pop();
+                                                                for(var i in datas)
+                                                                {
+                                                                    console.log(datas[i]);
+                                                                    querys[i] = JSON.parse(datas[i]);
+                                                                }
+                                                                
+                                                                
                                                                 //console.log(query.data.length);
                                                                 
                                                                 //console.log(query.data[0].type);
+                                                                //console.log("querys "+querys.length);
                                                                 
-                                                                for(var i in query.data)
+                                                                for(var i in querys)
                                                                 {
-                                                                    console.log(query.data[i].type);
-                                                                    console.log(typeof(query.data[i].type));
-                                                                    switch ( query.data[i].type )
+                                                                    var lastPos = new THREE.Vector3(0,0,0);
+                                                                    var gr = new THREE.Group();
+                                                                    var grMir = new THREE.Group();
+                                                                    for(var j in querys[i].data)
                                                                     {
-                                                                        case 'Video':
-                                                                            var x = Math.random()*10 - 5;
-                                                                            var y = Math.random()*10 - 5;
-                                                                            var z = Math.random()*10 - 5;
-                                                                            
-                                                                            var clone =  Video.clone(true);
-                                                                            clone.position.set(x , y,  z);
-                                                                            mob.add(clone)
-                                                                        break;
-                                                                        case 'Audio':
-                                                                            var x = Math.random()*10 - 5;
-                                                                            var y = Math.random()*10 - 5;
-                                                                            var z = Math.random()*10 - 5;
-                                                                            
-                                                                            var clone =  Audio.clone(true);
-                                                                            clone.position.set(x , y,  z);
-                                                                            mob.add(clone)
-                                                                        break;
-                                                                        case 'Document':
-                                                                            var x = Math.random()*10 - 5;
-                                                                            var y = Math.random()*10 - 5;
-                                                                            var z = Math.random()*10 - 5;
-                                                                            
-                                                                            var clone =  Document.clone(true);
-                                                                            clone.position.set(x , y,  z);
-                                                                            mob.add(clone)
-                                                                        break;
-                                                                        case 'Picture':
-                                                                            var x = Math.random()*10 - 5;
-                                                                            var y = Math.random()*10 - 5;
-                                                                            var z = Math.random()*10 - 5;
-                                                                            
-                                                                            var clone =  Picture.clone(true);
-                                                                            clone.position.set(x , y,  z);
-                                                                            mob.add(clone)
-                                                                            
-                                                                        break;
-                                                                        case 'Archive':
-                                                                            var x = Math.random()*10 - 5;
-                                                                            var y = Math.random()*10 - 5;
-                                                                            var z = Math.random()*10 - 5;
-                                                                            
-                                                                            var clone =  Archive.clone(true);
-                                                                            clone.position.set(x , y,  z);
-                                                                            mob.add(clone)
-                                                                        break;
-                                                                        case 'Programming':
-                                                                            var x = Math.random()*10 - 5;
-                                                                            var y = Math.random()*10 - 5;
-                                                                            var z = Math.random()*10 - 5;
-                                                                            
-                                                                            var clone =  Programming.clone(true);
-                                                                            clone.position.set(x , y,  z);
-                                                                            mob.add(clone)
-                                                                        break;
-                                                                        case 'Other':
-                                                                            
-                                                                        break;
-                                                                        default:
+                                                                       // console.log(querys[i].data[j].type);
+                                                                        console.log(typeof(querys[i].data[j].type));
+                                                                        
+                                                                        lastPos.x += Math.random()*4 - 2;
+                                                                        lastPos.y += Math.random()*4 - 2;
+                                                                        lastPos.z += Math.random()*4 ;
+                                                                        
+                                                                        console.log(lastPos);
+                                                                        
+                                                                        var x = lastPos.x ;
+                                                                        var y = lastPos.y ;
+                                                                        var z = lastPos.z ;
+                                                                        switch ( querys[i].data[j].type )
+                                                                        {
+                                                                            case 'Video':
+                                                                                
+                                                                                
+                                                                                var clone =  Video.clone(true);
+                                                                                clone.position.set(x , y,  z);
+                                                                                
+                                                                                gr.add(clone)
+                                                                                
+                                                                                var cloneMir =  Video.clone(true);
+                                                                                cloneMir.position.set(-x , y,  z);
+                                                                                
+                                                                                grMir.add(cloneMir)
+                                                                                
+                                                                            break;
+                                                                            case 'Audio':
+                                                                          
+                                                                                
+                                                                                var clone =  Audio.clone(true);
+                                                                                clone.position.set(x , y,  z);
+                                                                                gr.add(clone)
+                                                                                
+                                                                                var cloneMir =  Audio.clone(true);
+                                                                                cloneMir.position.set(-x , y,  z);
+                                                                                
+                                                                                grMir.add(cloneMir)
+                                                                            break;
+                                                                            case 'Document':
+                                                                      
+                                                                                
+                                                                                var clone =  Document.clone(true);
+                                                                                clone.position.set(x , y,  z);
+                                                                                gr.add(clone)
+                                                                                
+                                                                                var cloneMir =  Document.clone(true);
+                                                                                cloneMir.position.set(-x , y,  z);
+                                                                                
+                                                                                grMir.add(cloneMir)
+                                                                            break;
+                                                                            case 'Picture':
+                                                                          
+                                                                                
+                                                                                var clone =  Picture.clone(true);
+                                                                                clone.position.set(x , y,  z);
+                                                                                gr.add(clone)
+                                                                                
+                                                                                var cloneMir =  Picture.clone(true);
+                                                                                cloneMir.position.set(-x , y,  z);
+                                                                                
+                                                                                grMir.add(cloneMir)
+                                                                                
+                                                                            break;
+                                                                            case 'Archive':
+                                                                              
+                                                                                
+                                                                                var clone =  Archive.clone(true);
+                                                                                clone.position.set(x , y,  z);
+                                                                                gr.add(clone)
+                                                                                
+                                                                                var cloneMir =  Archive.clone(true);
+                                                                                cloneMir.position.set(-x , y,  z);
+                                                                                
+                                                                                grMir.add(cloneMir)
+                                                                            break;
+                                                                            case 'Programming':
+                                                                               
+                                                                                
+                                                                                var clone =  Programming.clone(true);
+                                                                                clone.position.set(x , y,  z);
+                                                                                gr.add(clone)
+                                                                                
+                                                                                var cloneMir =  Programming.clone(true);
+                                                                                cloneMir.position.set(-x , y,  z);
+                                                                                
+                                                                                grMir.add(cloneMir)
+                                                                            break;
+                                                                            case 'Other':
+                                                                                
+                                                                            break;
+                                                                            default:
+                                                                        }
+                                                                        
+                                                                        
+                                                                        
+                                                                        
                                                                     }
+                                                                    
+                                                                        var x = Math.random()*10 - 5;
+                                                                        var y = Math.random()*10 - 5;
+                                                                        var z = Math.random()*10 - 5;
+                                                                                
+                                                                        
+                                                                        //mobs[i].position.set(x,y,z);
+                                                                        //scene.add(mobs[i]);
+                                                                        
+                                                                        mobs[i] = new Mob(gr, grMir);
+                                                                        mobs[i].pos(x,y,z);
+                                                                        mobs[i].addScene();
                                                                 }
-                                                                scene.add(mob);
-                                                                mob.position.set(0, 5, -5);
+                                                                
+                                                           
+                                                                //scene.add(mob);
+                                                                //mob.position.set(0, 5, -5);
                                                                 
                                                                 
                                                             }, 2000);
@@ -357,6 +430,5 @@
             };
             animate();
         </script>
-        je fais des tests
     </body>
 </html>

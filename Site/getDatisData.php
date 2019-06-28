@@ -11,15 +11,16 @@ if($mysqli->connect_error)
 $sql = "SELECT *
 FROM datis";
 
-$stmt = $mysqli->prepare($sql);
-$stmt->bind_param("s", $_GET['q']);
-$stmt->execute();
-$stmt->store_result();
-$stmt->bind_result($id, $data);
-$stmt->fetch();
-$stmt->close();
 
 
-echo $data; 
+if (!$result = $mysqli->query($sql))
+    echo "Error";
+    
+for($i = 0; $i < $result->num_rows; $i++)
+{
+    $row = $result->fetch_assoc();
+    echo $row['usb_data']."#";
+}
+
 ?> 
 
